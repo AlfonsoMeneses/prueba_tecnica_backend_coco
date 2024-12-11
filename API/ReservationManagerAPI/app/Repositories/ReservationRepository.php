@@ -5,15 +5,35 @@ use App\Interfaces\IReservationRepository;
 use App\Models\Reservation;
 
 class ReservationRepository implements IReservationRepository{
+    
+    
     public function create(array $reservation){
 
         $newReservation = Reservation::create($reservation);
+        
+        return $newReservation;
+    }
 
-        if ($newReservation != null) {
-            return $newReservation;
+    public function getReservationByFilters(array $filters){
+        
+        $query = Reservation::query();
+
+        if(isset($filters['resource_id'])){
+            $query->where('resource_id', $filters['resource_id']);
         }
-        else{
-          throw new \Exception("Error interno, intente mas tarde");  
-        }   
+
+        if(isset($filters['beginDate'])){
+            $query->where('reserved_at', '>=', $filters['beginDate']);
+        }
+
+        if(isset($filters['endDate'])){
+            $query->where('reserved_at', '>=', $filters['endDate']);
+        }
+
+        if(isset($filters['no_cancelled'])){
+            $query->where('status_id', '!=', $filters['no_cancelled']);
+        }
+
+        return $query->get();
     }
 }

@@ -8,10 +8,20 @@ use App\Models\Resource;
 
 use App\DTOs\ResourceDTO;
 
+
+
 class ResourceRepository implements  IResourceRepository{
 
     public function getAll(){
         return Resource::where('active',true)->get();
+    }
+
+    public function getById(int $id){
+        $resource = Resource::where([
+                                        ['active',true],
+                                        ['id',$id]
+                                    ])->firstOrFail();
+        return $resource;
     }
 
     public function create(ResourceDTO $resource){

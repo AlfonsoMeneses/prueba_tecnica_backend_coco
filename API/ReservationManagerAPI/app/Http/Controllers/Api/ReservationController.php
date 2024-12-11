@@ -32,10 +32,9 @@ class ReservationController extends Controller
         }
 
         $resource = $this->getReserveToCreate($request);
-        $response = $this->reservationService->create($resource);
+        
         try {
-            
-
+            $response = $this->reservationService->create($resource);
             return response()->json($response,200);
         } 
         catch (BusinessException $e) {
