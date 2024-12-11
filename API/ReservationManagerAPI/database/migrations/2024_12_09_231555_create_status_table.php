@@ -18,6 +18,13 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('active')->default(true);;
         });
+
+        // Insertar los estados
+        DB::table('status')->insert([
+            ['code' => 'PENDING'    ,   'name' => 'Pendiente',  'created_at' => now(), 'updated_at' => now() ],
+            ['code' => 'CONFIRMED'  ,   'name' => 'Confirmado', 'created_at' => now(), 'updated_at' => now()],
+            ['code' => 'CANCELLED'  ,   'name' => 'Cancelado' , 'created_at' => now(), 'updated_at' => now() ],
+        ]);
     }
 
     /**

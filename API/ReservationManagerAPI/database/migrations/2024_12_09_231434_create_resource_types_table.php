@@ -18,6 +18,12 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('active')->default(true);
         });
+
+        // Insertar tipo de recurso 'General'
+        DB::table('resource_types')->insert([
+            ['code' => 'GEN', 'name' => 'General',  'created_at' => now(), 'updated_at' => now() ]
+        ]);
+    
     }
 
     /**

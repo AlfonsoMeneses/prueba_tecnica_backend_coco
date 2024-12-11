@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Interfaces;
 
 use App\DTOs\ResourceDTO;
 
-interface IResourceRepository{
+interface IResourceTypeRepository{
 
     public function getAll();
-    public function create(ResourceDTO $resource);
+    public function getById(int $id);
 }
-

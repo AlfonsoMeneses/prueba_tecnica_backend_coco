@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Interfaces\IResourceService;
 
+use App\Exceptions\BusinessException;
+
 //DTOs
 use App\DTOs\ResourceDTO;
 
@@ -31,7 +33,7 @@ class ResourceController extends Controller
 
         $validated = Validator::make($request->all(), [
             'name' => 'required',
-            'capacity' => 'required',
+            'capacity' => 'required|integer|min:1',
             'resource_type_id' => 'required',
         ]);
         
@@ -46,8 +48,12 @@ class ResourceController extends Controller
 
             return response()->json($response,200);
         } 
-        catch (\Exception $e) {
+        catch (BusinessException $e) {
             $error = ['message' => $e->getMessage() ];
+            return response()->json($error , 400);
+        }
+        catch (\Exception $e){
+            $error = ['message' => 'Error interno, intente mas tarde' ];
             return response()->json($error , 400);
         }
 
