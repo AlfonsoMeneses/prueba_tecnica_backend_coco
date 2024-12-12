@@ -12,3 +12,4 @@ Route::post('/resources', [ResourceController::class, 'create']);
 
 /** Reservas */
 Route::post('/reservations', [ReservationController::class, 'create']);
+Route::delete('/reservations/{id}', [ReservationController::class, 'cancel']);

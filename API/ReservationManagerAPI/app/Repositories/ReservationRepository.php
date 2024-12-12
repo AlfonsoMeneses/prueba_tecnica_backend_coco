@@ -4,8 +4,15 @@ namespace App\Repositories;
 use App\Interfaces\IReservationRepository;
 use App\Models\Reservation;
 
+use App\DTOs\ReservationToUpdateStatusDTO;
+
 class ReservationRepository implements IReservationRepository{
     
+    //Obtener una reserva por ID
+    public function getById(int $id){
+        return Reservation::find($id);
+    }
+
     //Creando una reserva
     public function create(array $reservation){
 
@@ -49,5 +56,22 @@ class ReservationRepository implements IReservationRepository{
 
         //retornando los datos de la consulta.
         return $query->get();
+    }
+
+    //Actualizar el estado de una reserva
+    public function updateStatus(ReservationToUpdateStatusDTO $reservation){
+        $reservationToUpdate = Reservation::find($reservation->id);
+
+        if($reservationToUpdate == null){
+            return null;
+        }
+
+
+        $reservationToUpdate->status_id = $reservation->status_id;
+        $reservationToUpdate->updated_at = now();
+
+        $reservationToUpdate->save();
+
+        return $reservationToUpdate;
     }
 }

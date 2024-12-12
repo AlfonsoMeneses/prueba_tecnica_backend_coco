@@ -20,7 +20,7 @@ class StatusRepository implements IStatusRepository{
                             )->first();
     }
 
-    public function getCode(string $code){
+    public function getByCode(string $code){
         return Status::where(
                                 ['active',true],
                                 ['code',$code]
