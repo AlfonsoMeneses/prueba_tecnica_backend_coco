@@ -19,4 +19,11 @@ class StatusRepository implements IStatusRepository{
                                 ['id',$id]
                             )->first();
     }
+
+    public function getCode(string $code){
+        return Status::where(
+                                ['active',true],
+                                ['code',$code]
+                            )->first();
+    }
 }
