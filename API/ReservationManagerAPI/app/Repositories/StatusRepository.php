@@ -14,16 +14,17 @@ class StatusRepository implements IStatusRepository{
     }
 
     public function getById(int $id){
-        return Status::where(
-                                ['active',true],
-                                ['id',$id]
-                            )->first();
+        return Status::where([
+                                'active' => true,
+                                'id' => $id
+                             ])->first();
     }
 
     public function getByCode(string $code){
-        return Status::where(
-                                ['active',true],
-                                ['code',$code]
-                            )->first();
+        
+        return Status::where([
+                                'active'=> true,
+                                'code' => $code
+                             ])->first();
     }
 }

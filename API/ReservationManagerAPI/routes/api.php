@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ReservationController;
 
 /** Recursos */
 Route::get('/resources', [ResourceController::class, 'getAll']);
+Route::get('/resources/{id}/availability', [ResourceController::class, 'getResourceAvailability']);
 Route::post('/resources', [ResourceController::class, 'create']);
 
 /** Reservas */

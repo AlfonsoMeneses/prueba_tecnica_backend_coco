@@ -90,7 +90,6 @@ class ReservationController extends Controller
             $error = ['message' => 'Error interno, intente mas tarde' ];
             return response()->json($error , 400);
         }   
-        
     }
 
     /** privados */
