@@ -39,7 +39,7 @@ class ReservationController extends Controller
         $resource = $this->getReserveToCreate($request);
         
         try {
-            //Se envia datos al servicio para la creación
+            //Se envía datos al servicio para la creación
             $response = $this->reservationService->create($resource);
 
             //Respuesta de la petición

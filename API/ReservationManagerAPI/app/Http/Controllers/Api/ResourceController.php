@@ -53,8 +53,8 @@ class ResourceController extends Controller
 
             //Validando rango de fechas
             $validator = Validator::make($request->all(), [
-                'beginDate' => 'required|date', 
-                'endDate' => 'required|date',   
+                'beginDate' => 'required|date|before:endDate', 
+                'endDate' => 'required|date|after:beginDate',   
             ]);
 
              // Si la validación falla, lanzamos la excepción manualmente
@@ -81,15 +81,54 @@ class ResourceController extends Controller
             return response()->json($error , 400);
         }
         catch (\Exception $e){
-            //echo $e;
-            $error = ['message' =>'Error interno, intente mas tarde' ];
+            echo $e;
+            $error = ['message' => 'Error interno, intente mas tarde' ];
             return response()->json($error , 400);
         }        
+    }
+
+    //Endpoint para obtener todos los recursos activos disponibles en un rango de fecha
+    public function getAvailableResources(Request $request){
+        try {
+
+           //Validando rango de fechas
+           $validator = Validator::make($request->all(), [
+               'beginDate' => 'required|date|before:endDate', 
+               'endDate' => 'required|date|after:beginDate',   
+           ]);
+
+            // Si la validación falla, lanzamos la excepción manualmente
+           if ($validator->fails()) {
+               throw new BusinessException('Falta el rango de fechas para la consulta, o los parámetros son inválidos.');
+           }
+
+           $query = new QueryAvailabilityResourceDTO([
+               'beginDate' => $request->beginDate,
+               'endDate' => $request->endDate
+           ]);
+           
+           $response = $this->resourceService->getAvailableResources($query);
+
+           $data = [
+               "resources" =>$response,
+           ];
+
+           return response()->json($data,200);
+       }
+       catch (BusinessException $e) {
+           $error = ['message' => $e->getMessage() ];
+           return response()->json($error , 400);
+       }
+       catch (\Exception $e){
+           $error = ['message' =>'Error interno, intente mas tarde' ];
+           return response()->json($error , 400);
+       }  
     }
 
     //Endpoint para la creación de un recurso
     public function create(Request $request){
 
+        //Validando los parámetros
         $validated = Validator::make($request->all(), [
             'name' => 'required',
             'capacity' => 'required|integer|min:1',
@@ -100,9 +139,11 @@ class ResourceController extends Controller
             return response()->json($validated->errors(),400);
         }
 
+        //
         $resource = $this->getResource($request);
 
         try {
+            
             $response = $this->resourceService->create($resource);
 
             return response()->json($response,200);

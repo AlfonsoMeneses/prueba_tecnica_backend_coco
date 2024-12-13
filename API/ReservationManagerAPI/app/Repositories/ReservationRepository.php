@@ -60,18 +60,22 @@ class ReservationRepository implements IReservationRepository{
 
     //Actualizar el estado de una reserva
     public function updateStatus(ReservationToUpdateStatusDTO $reservation){
+        //Obteniendo la reserva para actualizar
         $reservationToUpdate = Reservation::find($reservation->id);
 
+        //Si no se encuentra la reserva
         if($reservationToUpdate == null){
             return null;
         }
 
-
+        //Actualizando el estado y la fecha de actualización
         $reservationToUpdate->status_id = $reservation->status_id;
         $reservationToUpdate->updated_at = now();
 
+        //Guardando cambios
         $reservationToUpdate->save();
 
+        //Enviando datos
         return $reservationToUpdate;
     }
 }
