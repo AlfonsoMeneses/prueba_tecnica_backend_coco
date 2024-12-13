@@ -97,7 +97,7 @@ class ReservationController extends Controller
         return [
             'resource_id' => $request->resourceId,
             'reserved_at' => $request->reservedAt,
-            'duration' => $request->duration,
+            'duration' => (int)$request->duration,
         ];
     }
     
